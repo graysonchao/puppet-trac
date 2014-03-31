@@ -30,31 +30,10 @@
 #            cc => "puppet-dev@madstop.com";
 #   }
 define trac(
-    $basedir = "/export/svn/trac",
-    $repository = false,
-    $templates = "/usr/share/trac/templates",
-    $cgipath = false,
-    $navadd = false,
-    $cc,
-    $description,
-    $db = "sqlite:db/trac.db",
-    $owner = "www-data",
-    $group = "www-data",
-    $url,
-    $repobase,
-    $cgidir,
-    $replyto = "trac@$domain",
-    $from = "trac@$domain",
-    $logo = "/images/traclogo.png",
-    $alt = $domain,
-    $smtpserver = "mail.$domain",
-    $repostype = "svn",
-    $apache = false
+    $basedir = "/usr/local/trac",
+    $svnbasedir = "/usr/local/svn",
+    $projects # A list of project names
 ) {
-    $repo = $repository ? {
-        false => "$repobase/$name",
-        default => $repository
-    }
     $link = "$url/trac/$name"
     $tracdir = "$basedir/$name"
     $config = "$tracdir/conf/trac.ini"
@@ -112,4 +91,6 @@ define trac(
             cgidir => $cgidir
         }
     }
+
+    puppet_trac::trac_project { $projects: }
 }
